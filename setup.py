@@ -1,7 +1,7 @@
 from distutils.core import setup, Extension
 
 setup(name = "pyspamsum",
-    version = "1.0.0",
+    version = "1.0.1",
     author = "Russell Keith-Magee",
     author_email = "russell@keith-magee.com",
     url = 'http://code.google.com/p/pyspamsum/',
@@ -40,9 +40,6 @@ For details on spamsum itself, please see the spamsum README:
 
     http://samba.org/ftp/unpacked/junkcode/spamsum/README
 """,
-    classifiers = [
-
-    ],
     ext_modules = [
         Extension(
             "spamsum", [
