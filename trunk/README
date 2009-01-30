@@ -45,7 +45,7 @@ Usage
 >>> s3 = "Huh? Gilbert and Who?"
 
 # Evaluate the edit distance between two strings
->>> spamsum.edit_distance(s1, s1)
+>>> spamsum.edit_distance(s1, s2)
 28
 
 # Evaluate the spamsum of some strings
@@ -56,10 +56,10 @@ Usage
 3:kEvyc/sFIKwYclQY4MKLFE4IgunfELzIKygn:kE6Ai3KQ/MKOgWf/KZn
 
 # Compare two spamsums. 0 = no match, 100 = perfect match.
->>> spamsum.match(s1, s1)
+>>> spamsum.match(sum1, sum1)
 100
->>> spamsum.match(s1, s2)
+>>> spamsum.match(sum1, sum2)
 66
->>> spamsum.match(s1, s3)
+>>> spamsum.match(sum1, sum3)
 0
 
