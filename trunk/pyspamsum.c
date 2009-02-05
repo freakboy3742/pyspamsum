@@ -51,8 +51,10 @@ PyObject *py_spamsum(PyObject *self, PyObject *args)
     {
         return NULL;
     }
+
     sum = spamsum(in, length, flags, bsize);
     result = Py_BuildValue("s", sum);
+    free(sum);
 
     return result;
 }
