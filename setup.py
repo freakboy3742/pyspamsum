@@ -1,7 +1,7 @@
 from distutils.core import setup, Extension
 
 setup(name = "pyspamsum",
-    version = "1.0.1",
+    version = "1.0.2",
     author = "Russell Keith-Magee",
     author_email = "russell@keith-magee.com",
     url = 'http://code.google.com/p/pyspamsum/',
@@ -24,7 +24,8 @@ of hashes to find a match.
 pyspamsum is a Python wrapper for the core API of spamsum.
 
 The original spamsum code has been licensed under the terms of the
-the Perl Artistic License. It has been slightly modified
+the Perl Artistic License. It has been slightly modified to remove
+a special case for small window size checksums.
 
 The original code is Copyright Andrew Tridgell <tridge@samba.org> 2002.
 It forms part of Andrew's junkcode, and is available here:
