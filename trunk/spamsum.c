@@ -104,7 +104,7 @@ static inline u32 sum_hash(uchar c, u32 h)
   take a message of length 'length' and return a string representing a hash of that message,
   prefixed by the selected blocksize
 */
-char *spamsum(const uchar *in, size_t length, u32 flags, u32 bsize)
+char *spamsum(const uchar *in, u32 length, u32 flags, u32 bsize)
 {
 	const char *b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 	char *ret, *p;
@@ -489,7 +489,7 @@ static char *spamsum_stdin(u32 flags, u32 block_size)
 {
 	uchar buf[10*1024];
 	uchar *msg;
-	size_t length = 0;
+	u32 length = 0;
 	int n;
 	char *sum;
 
