@@ -40,7 +40,7 @@ Usage
 
 # Import spamsum and set up some strings
 >>> import spamsum
->>> s1 = "I am the very model of a modern Major-General, I've information animal and vegegtable and mineral"
+>>> s1 = "I am the very model of a modern Major-General, I've information animal and vegetable and mineral"
 >>> s2 = "I am the very model of a modern Brigadier, I've information animal and vegetable and something else"
 >>> s3 = "Huh? Gilbert and Who?"
 

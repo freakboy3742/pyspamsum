@@ -1,7 +1,7 @@
 from distutils.core import setup, Extension
 
 setup(name = "pyspamsum",
-    version = "1.0.2",
+    version = "1.0.3",
     author = "Russell Keith-Magee",
     author_email = "russell@keith-magee.com",
     url = 'http://code.google.com/p/pyspamsum/',

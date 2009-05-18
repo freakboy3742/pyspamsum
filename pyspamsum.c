@@ -12,7 +12,7 @@
 #include <stdlib.h>
 
 int edit_distn(char *from, int from_len, char *to, int to_len);
-char *spamsum(const unsigned char *in, size_t length, unsigned int flags, unsigned int bsize);
+char *spamsum(const unsigned char *in, unsigned int length, unsigned int flags, unsigned int bsize);
 unsigned int spamsum_match(const char *str1, const char *str2);
 
 PyObject *py_edit_distance(PyObject *self, PyObject *args)
@@ -41,7 +41,7 @@ PyObject *py_spamsum(PyObject *self, PyObject *args)
     char *sum;
 
     unsigned char *in;
-    size_t length;
+    unsigned int length;
     unsigned int flags, bsize;
 
     flags = 0;
