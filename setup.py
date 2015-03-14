@@ -4,7 +4,7 @@ setup(name = "pyspamsum",
     version = "1.0.3",
     author = "Russell Keith-Magee",
     author_email = "russell@keith-magee.com",
-    url = 'http://code.google.com/p/pyspamsum/',
+    url = 'http://github.com/freakboy3742/pyspamsum/',
     license = "New BSD",
     classifiers = [
         'Development Status :: 5 - Production/Stable',
