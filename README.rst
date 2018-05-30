@@ -2,22 +2,19 @@ PySpamSum
 =========
 
 .. image:: https://img.shields.io/pypi/pyversions/pyspamsum.svg
-    :target: https://pypi.python.org/pypi/pyspamsum
+    :target: https://pypi.org/project/pyspamsum
 
 .. image:: https://img.shields.io/pypi/v/pyspamsum.svg
-    :target: https://pypi.python.org/pypi/pyspamsum
+    :target: https://pypi.org/project/pyspamsum
 
 .. image:: https://img.shields.io/pypi/status/pyspamsum.svg
-    :target: https://pypi.python.org/pypi/pyspamsum
+    :target: https://pypi.org/project/pyspamsum
 
 .. image:: https://img.shields.io/pypi/l/pyspamsum.svg
     :target: https://github.com/pybee/pyspamsum/blob/master/LICENSE
 
 .. image:: https://travis-ci.org/pybee/pyspamsum.svg?branch=master
     :target: https://travis-ci.org/pybee/pyspamsum
-
-.. image:: https://badges.gitter.im/pybee/general.svg
-    :target: https://gitter.im/pybee/general
 
 spamsum is a fuzzy hash specifically designed for hashing email messages
 to detect if they are SPAM. The spamsum utility includes the ability to
