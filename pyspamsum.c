@@ -6,6 +6,7 @@
  *
  * Copyright 2009 Russell Keith-Magee <russell@keith-magee.com>
  */
+
 #include <Python.h>
 #include <sys/types.h>
 #include <stdio.h>
@@ -14,6 +15,17 @@
 int edit_distn(char *from, int from_len, char *to, int to_len);
 char *spamsum(const unsigned char *in, unsigned int length, unsigned int flags, unsigned int bsize);
 unsigned int spamsum_match(const char *str1, const char *str2);
+
+struct module_state {
+    PyObject *error;
+};
+
+#if PY_MAJOR_VERSION >= 3
+#define GETSTATE(m) ((struct module_state*)PyModule_GetState(m))
+#else
+#define GETSTATE(m) (&_state)
+static struct module_state _state;
+#endif
 
 PyObject *py_edit_distance(PyObject *self, PyObject *args)
 {
@@ -90,8 +102,56 @@ static PyMethodDef methods[] = {
     {NULL, NULL, 0, NULL}
 };
 
-PyMODINIT_FUNC
-initspamsum()
-{
-    (void) Py_InitModule("spamsum", methods);
+#if PY_MAJOR_VERSION >= 3
+static int spamsum_traverse(PyObject *m, visitproc visit, void *arg) {
+    Py_VISIT(GETSTATE(m)->error);
+    return 0;
 }
+
+static int spamsum_clear(PyObject *m) {
+    Py_CLEAR(GETSTATE(m)->error);
+    return 0;
+}
+static struct PyModuleDef ss =
+{
+    PyModuleDef_HEAD_INIT,
+    "spamsum",
+    "",
+    sizeof(struct module_state),
+    methods,
+    NULL,
+    spamsum_traverse,
+    spamsum_clear,
+    NULL
+};
+#define INITERROR return NULL
+
+PyMODINIT_FUNC
+PyInit_spamsum(void)
+#else
+#define INITERROR return
+void
+initspamsum(void)
+#endif
+{
+#if PY_MAJOR_VERSION >= 3
+    PyObject *module = PyModule_Create(&ss);
+#else
+    PyObject *module = Py_InitModule("spamsum", methods);
+#endif
+
+    if (module == NULL)
+        INITERROR;
+    struct module_state *st = GETSTATE(module);
+
+    st->error = PyErr_NewException("spamsum.Error", NULL, NULL);
+    if (st->error == NULL) {
+        Py_DECREF(module);
+        INITERROR;
+    }
+
+#if PY_MAJOR_VERSION >= 3
+    return module;
+#endif
+}
+
