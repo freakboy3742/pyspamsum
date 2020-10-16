@@ -10,7 +10,7 @@ with io.open('README.rst', encoding='utf8') as readme:
 
 setup(
     name="pyspamsum",
-    version="1.0.4",
+    version="1.0.5",
     description="A Python wrapper for Andrew Tridgell's spamsum algorithm",
     long_description=long_description,
     author="Russell Keith-Magee",
@@ -27,6 +27,9 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Topic :: Text Processing',
         'Topic :: Utilities',
     ],
