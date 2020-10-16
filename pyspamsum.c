@@ -7,6 +7,8 @@
  * Copyright 2009 Russell Keith-Magee <russell@keith-magee.com>
  */
 
+#define PY_SSIZE_T_CLEAN
+
 #include <Python.h>
 #include <sys/types.h>
 #include <stdio.h>
@@ -33,7 +35,7 @@ PyObject *py_edit_distance(PyObject *self, PyObject *args)
     int distance;
 
     char *from, *to;
-    int from_len, to_len;
+    Py_ssize_t from_len, to_len;
 
     if (!PyArg_ParseTuple(args, "s#s#", &from, &from_len, &to, &to_len))
     {
@@ -53,7 +55,7 @@ PyObject *py_spamsum(PyObject *self, PyObject *args)
     char *sum;
 
     unsigned char *in;
-    unsigned int length;
+    Py_ssize_t length;
     unsigned int flags, bsize;
 
     flags = 0;
