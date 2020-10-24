@@ -7,3 +7,6 @@ dist
 build
 _build
 distribute-*
+.tox/
+.vscode/
+venv/
