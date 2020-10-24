@@ -65,8 +65,8 @@ Once installed, here are some examples of usage::
     # Evaluate the spamsum of some strings
     >>> sum1 = spamsum.spamsum(s1)
     >>> sum2 = spamsum.spamsum(s2)
-    >>> sum3 = spamsum.spamsum(s2)
-    >>> print sum1
+    >>> sum3 = spamsum.spamsum(s3)
+    >>> print(sum1)
     3:kEvyc/sFIKwYclQY4MKLFE4Igu0uLzIKygn:kE6Ai3KQ/MKOgDKZn
 
     # Compare two spamsums. 0 = no match, 100 = perfect match.
