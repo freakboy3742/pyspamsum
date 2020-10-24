@@ -1,8 +1,3 @@
-LICENSE
-README
-edit_dist.c
-pyspamsum.c
-setup.py
-spamsum.c
-tox.ini
+include LICENSE
+include tox.ini
 recursive-include tests *.py
