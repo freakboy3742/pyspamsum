@@ -2,6 +2,7 @@ import unittest
 
 import spamsum
 
+
 class SpamSumTest(unittest.TestCase):
     def setUp(self):
         self.s1 = "I am the very model of a modern Major-General, I've information animal and vegetable and mineral"

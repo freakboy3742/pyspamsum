@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import io
 
-from setuptools import find_packages, setup, Extension
+from setuptools import setup, Extension
 
 
 with io.open('README.rst', encoding='utf8') as readme:
