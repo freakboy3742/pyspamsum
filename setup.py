@@ -13,6 +13,7 @@ setup(
     version="1.0.5",
     description="A Python wrapper for Andrew Tridgell's spamsum algorithm",
     long_description=long_description,
+    long_description_content_type='text/x-rst',
     author="Russell Keith-Magee",
     author_email="russell@keith-magee.com",
     url='http://github.com/freakboy3742/pyspamsum/',
