@@ -159,7 +159,7 @@ register int from_len, to_len;
 					  infinity))
 
    Since this only looks at most two rows and three columns back, we need
-   only store the values for the two preceeding rows.  In this
+   only store the values for the two preceding rows.  In this
    implementation, we do not explicitly store the zero column, so only 2 *
    from_len + 2   words are needed.  However, in the implementation of the
    swap_cost   check, the current matrix value is used as a buffer; we
@@ -192,8 +192,8 @@ register int from_len, to_len;
    strings are nonempty.  We also don't need to consider swap costs in row
    1.
 
-   COMMENT:  the indicies   row and col   below point into the STRING, so
-   the corresponding MATRIX indicies are   row+1 and col+1.
+   COMMENT: the indices row and col below point into the STRING, so
+   the corresponding MATRIX indices are row+1 and col+1.
 */
 
     buffer[index++] = min2(ins + del, (from[0] == to[0] ? 0 : ch));
@@ -266,4 +266,3 @@ register int from_len, to_len;
 	free((char *) buffer);
     return row;
 } /* edit_distn */
-

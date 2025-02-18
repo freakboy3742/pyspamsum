@@ -3,7 +3,7 @@
   Copyright Andrew Tridgell <tridge@samba.org> 2002
 
   This code is released under the GNU General Public License version 2
-  or later.  Alteratively, you may also use this code under the terms
+  or later.  Alternatively, you may also use this code under the terms
   of the Perl Artistic license.
 
   If you wish to distribute this code under the terms of a different
@@ -231,7 +231,7 @@ again:
    we only accept a match if we have at least one common substring in
    the signature of length ROLLING_WINDOW. This dramatically drops the
    false positive rate for low score thresholds while having
-   negligable affect on the rate of spam detection.
+   negligible effect on the rate of spam detection.
 
    return 1 if the two strings do have a common substring, 0 otherwise
 */
@@ -242,7 +242,7 @@ static int has_common_substring(const char *s1, const char *s2)
 	u32 hashes[SPAMSUM_LENGTH];
 
 	/* there are many possible algorithms for common substring
-	   detection. In this case I am re-using the rolling hash code
+	   detection. In this case I am reusing the rolling hash code
 	   to act as a filter for possible substring matches */
 
 	roll_reset();

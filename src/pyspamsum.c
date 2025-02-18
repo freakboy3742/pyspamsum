@@ -156,4 +156,3 @@ initspamsum(void)
     return module;
 #endif
 }
-
