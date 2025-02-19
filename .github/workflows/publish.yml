@@ -19,4 +19,4 @@ jobs:
           target: dist/
 
       - name: Publish release to production PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1.12.3
+        uses: pypa/gh-action-pypi-publish@release/v1
