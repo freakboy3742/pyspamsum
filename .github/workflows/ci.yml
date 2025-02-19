@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_call:
 
 # Cancel active CI runs for a PR before starting another run
 concurrency:
@@ -25,26 +26,45 @@ jobs:
   unit-tests:
     name: Unit tests
     needs: [ pre-commit ]
-    runs-on: ${{ matrix.platform }}
-    continue-on-error: ${{ matrix.experimental || false }}
+    runs-on: ${{ matrix.runs-on }}
     strategy:
       fail-fast: false
       matrix:
-        platform: [ "macos-13", "macos-latest", "ubuntu-24.04" ]
-        # Test the min and max stable Python version on each OS.
-        python-version: [ "3.9", "3.13" ]
+        name: [ "macOS (x86_64)", "macOS (arm64)", "iOS", "Linux (x86_64)", "Linux (arm64)" ] # Android, Windows (x86_64), Windows (arm64)
         include:
-          # Ensure the Python versions between min and max are tested
-          - platform: "ubuntu-24.04"
-            python-version: "3.10"
-          - platform: "ubuntu-24.04"
-            python-version: "3.11"
-          - platform: "ubuntu-24.04"
-            python-version: "3.12"
-          # Allow dev Python to fail without failing entire job
-          - platform: "ubuntu-24.04"
-            python-version: "3.14"
-            experimental: true
+          - name: macOS (x86_64)
+            platform: macos
+            runs-on: macos-13
+            archs: auto
+          - name: macOS (arm64)
+            platform: macos
+            runs-on: macos-latest
+            archs: auto,universal2
+          - name: iOS
+            platform: ios
+            runs-on: macos-latest
+            archs: auto
+          - name: Linux (x86_64)
+            platform: linux
+            runs-on: ubuntu-24.04
+            archs: auto
+          - name: Linux (arm64)
+            platform: linux
+            runs-on: ubuntu-24.04-arm
+            archs: auto
+          # - name: Android
+          #   platform: android
+          #   runs-on: macos-latest
+          #   archs: auto
+          # - name: Windows (x86_64)
+          #   platform: windows
+          #   runs-on: windows-latest
+          #   archs: auto
+          # - name: Windows (arm64)
+          #   platform: windows
+          #   runs-on: windows-latest-arm??
+          #   archs: auto
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4.2.2
@@ -54,16 +74,23 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5.4.0
       with:
-        python-version: ${{ matrix.python-version }}
-        allow-prereleases: true
+        python-version: "3.x"
 
-    - name: Install Tox
-      uses: beeware/.github/.github/actions/install-requirement@main
-      with:
-        requirements: tox
-        extra: dev
-
-    - name: Test
-      id: test
+    - name: Install cibuildwheel
       run: |
-        tox -e py
+        python -m pip install -U pip
+        # Use a branch while iOS support is in development and test-sources is unpublished.
+        # python -m pip install cibuildwheel==3.0.0
+        python -m pip install git+https://github.com/freakboy3742/cibuildwheel.git@ios-support
+
+    - name: Build wheels
+      run: python -m cibuildwheel
+      env:
+        CIBW_PLATFORM: ${{ matrix.platform }}
+        CIBW_ARCHS: ${{ matrix.archs }}
+        CIBW_BUILD: "cp*"
+
+    - uses: actions/upload-artifact@v4.6.0
+      with:
+        name: wheels-${{ matrix.name }}
+        path: ./wheelhouse/*.whl

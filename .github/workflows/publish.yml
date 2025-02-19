@@ -1,0 +1,22 @@
+name: Upload Python Package
+
+on:
+  release:
+    types: published
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      # This permission is required for trusted publishing.
+      id-token: write
+    steps:
+      - uses: dsaltares/fetch-gh-release-asset@1.1.2
+        with:
+          version: tags/${{ github.event.release.tag_name }}
+          file: ${{ github.event.repository.name }}.*
+          regex: true
+          target: dist/
+
+      - name: Publish release to production PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1.12.3
