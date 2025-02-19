@@ -33,6 +33,7 @@ jobs:
         uses: actions/download-artifact@v4.1.8
         with:
           pattern: wheels-*
+          merge-multiple: true
           path: dist
 
       - name: Create release
