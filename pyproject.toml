@@ -38,9 +38,11 @@ classifiers=[
 [project.optional-dependencies]
 # Extras used by developers *of* briefcase are pinned to specific versions to
 # ensure environment consistency.
+test = [
+    "pytest == 8.3.4",
+]
 dev = [
     "pre-commit == 4.1.0",
-    "pytest == 8.3.4",
     "ruff == 0.9.6",
     "setuptools_scm == 8.1.0",
     "tox == 4.24.1",
@@ -53,6 +55,7 @@ Source = "https://github.com/freakboy3742/pyspamsum/"
 
 [tool.cibuildwheel]
 test-command = "pytest"
+test-extras = ["test"]
 test-sources = ["tests"]
 
 [tool.pytest.ini_options]
