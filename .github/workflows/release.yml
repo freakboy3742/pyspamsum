@@ -48,7 +48,7 @@ jobs:
         with:
           subject-path: "dist/*"
 
-      # - name: Publish release to Test PyPI
-      #   uses: pypa/gh-action-pypi-publish@release/v1
-      #   with:
-      #     repository-url: https://test.pypi.org/legacy/
+      - name: Publish release to Test PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
