@@ -1,21 +1,33 @@
 /*
-  this is a checksum routine that is specifically designed for spam.
-  Copyright Andrew Tridgell <tridge@samba.org> 2002
+  this is a checksum routine that is specifically designed for spam. Copyright
+  Andrew Tridgell <tridge@samba.org> 2002
 
-  This code is released under the GNU General Public License version 2
-  or later.  Alternatively, you may also use this code under the terms
-  of the Perl Artistic license.
+  This code is released under the GNU General Public License version 2 or later.
+  Alternatively, you may also use this code under the terms of the Perl Artistic
+  license.
 
-  If you wish to distribute this code under the terms of a different
-  free software license then please ask me. If there is a good reason
-  then I will probably say yes.
+  If you wish to distribute this code under the terms of a different free
+  software license then please ask me. If there is a good reason then I will
+  probably say yes.
 
   ---
 
-  Modified by Russell Keith-Magee, 20 Jan 2009:
-  * removed the condition preventing comparison of small block sizes
-      (lines 364-366)
-  * Modified the help string to be legal cross platform C.
+  Original sources can be found at:
+
+    https://www.samba.org/ftp/unpacked/junkcode/spamsum/
+
+  Changes from the original:
+
+  20 Jan 2009:
+    * Removed the condition preventing comparison of small block sizes (lines
+      364-366)
+    * Modified the help string to be legal cross platform C.
+
+  20 Feb 2025:
+    * Removed the spamsum_match_db, spamsum_stdin, spamsum_file, and mainline
+      entry points, plus imports required by those methods. These methods were
+      not exposed by the Python binding, and were problematic for Windows support.
+
 */
 #include <stdio.h>
 #include <stdlib.h>
