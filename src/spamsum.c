@@ -14,6 +14,7 @@
 
   Original sources can be found at:
 
+	https://github.com/tridge/junkcode/tree/master/spamsum
     https://www.samba.org/ftp/unpacked/junkcode/spamsum/
 
   Changes from the original:

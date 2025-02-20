@@ -27,18 +27,12 @@ The original spamsum code has been licensed under the terms of the
 the Perl Artistic License. It has been slightly modified
 
 The original code is Copyright Andrew Tridgell <tridge@samba.org> 2002.
-It forms part of Andrew's junkcode, and is available here:
+It forms part of Andrew's junkcode, and is available:
 
-    http://www.samba.org/junkcode/#spamsum
+* `on Github <https://github.com/tridge/junkcode/tree/master/spamsum>`__
+* `On Andrew Tridgell's website <https://www.samba.org/ftp/unpacked/junkcode/spamsum/>`__
 
-The spamsum code in this project is derived from an updated version that
-was published at Linux.conf.au 2004:
-
-    http://linux.anu.edu.au/linux.conf.au/2004/papers/junkcode/spamsum
-
-For details on spamsum itself, please see the spamsum README:
-
-    http://samba.org/ftp/unpacked/junkcode/spamsum/README
+For details on spamsum itself, please see the README in the spamsum repo.
 
 Installation
 ------------
