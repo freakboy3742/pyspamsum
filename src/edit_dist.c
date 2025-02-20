@@ -14,7 +14,6 @@
  */
 
 #include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
 
 /* edit_dist -- returns the minimum edit distance between two strings

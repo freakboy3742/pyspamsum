@@ -1,30 +1,39 @@
 /*
-  this is a checksum routine that is specifically designed for spam.
-  Copyright Andrew Tridgell <tridge@samba.org> 2002
+  this is a checksum routine that is specifically designed for spam. Copyright
+  Andrew Tridgell <tridge@samba.org> 2002
 
-  This code is released under the GNU General Public License version 2
-  or later.  Alternatively, you may also use this code under the terms
-  of the Perl Artistic license.
+  This code is released under the GNU General Public License version 2 or later.
+  Alternatively, you may also use this code under the terms of the Perl Artistic
+  license.
 
-  If you wish to distribute this code under the terms of a different
-  free software license then please ask me. If there is a good reason
-  then I will probably say yes.
+  If you wish to distribute this code under the terms of a different free
+  software license then please ask me. If there is a good reason then I will
+  probably say yes.
 
   ---
 
-  Modified by Russell Keith-Magee, 20 Jan 2009:
-  * removed the condition preventing comparison of small block sizes
-      (lines 364-366)
-  * Modified the help string to be legal cross platform C.
+  Original sources can be found at:
+
+    https://www.samba.org/ftp/unpacked/junkcode/spamsum/
+
+  Changes from the original:
+
+  20 Jan 2009:
+    * Removed the condition preventing comparison of small block sizes (lines
+      364-366)
+    * Modified the help string to be legal cross platform C.
+
+  20 Feb 2025:
+    * Removed the spamsum_match_db, spamsum_stdin, spamsum_file, and mainline
+      entry points, plus imports required by those methods. These methods were
+      not exposed by the Python binding, and were problematic for Windows support.
+
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
-#include <unistd.h>
 #include <ctype.h>
 
 /* the output is a string of length 64 in base64 */
@@ -447,233 +456,4 @@ u32 spamsum_match(const char *str1, const char *str2)
 	free(s2);
 
 	return score;
-}
-
-/*
-  return the maximum match for a file containing a list of spamsums
-*/
-u32 spamsum_match_db(const char *fname, const char *sum, u32 threshold)
-{
-	FILE *f;
-	char line[100];
-	u32 best = 0;
-
-	f = fopen(fname, "r");
-	if (!f) return 0;
-
-	/* on each line of the database we compute the spamsum match
-	   score. We then pick the best score */
-	while (fgets(line, sizeof(line)-1, f)) {
-		u32 score;
-		int len;
-		len = strlen(line);
-		if (line[len-1] == '\n') line[len-1] = 0;
-
-		score = spamsum_match(sum, line);
-
-		if (score > best) {
-			best = score;
-			if (best >= threshold) break;
-		}
-	}
-
-	fclose(f);
-
-	return best;
-}
-
-/*
-  return the spamsum on stdin
-*/
-static char *spamsum_stdin(u32 flags, u32 block_size)
-{
-	uchar buf[10*1024];
-	uchar *msg;
-	u32 length = 0;
-	int n;
-	char *sum;
-
-	msg = malloc(sizeof(buf));
-	if (!msg) return NULL;
-
-	/* load the file, expanding the allocation as needed. */
-	while (1) {
-		n = read(0, buf, sizeof(buf));
-		if (n == -1 && errno == EINTR) continue;
-		if (n <= 0) break;
-
-		msg = realloc(msg, length + n);
-		if (!msg) return NULL;
-
-		memcpy(msg+length, buf, n);
-		length += n;
-	}
-
-	sum = spamsum(msg, length, flags, block_size);
-
-	free(msg);
-
-	return sum;
-}
-
-
-/*
-  return the spamsum on a file
-*/
-char *spamsum_file(const char *fname, u32 flags, u32 block_size)
-{
-	int fd;
-	char *sum;
-	struct stat st;
-	uchar *msg;
-
-	if (strcmp(fname, "-") == 0) {
-		return spamsum_stdin(flags, block_size);
-	}
-
-	fd = open(fname, O_RDONLY);
-	if (fd == -1) {
-		perror(fname);
-		return NULL;
-	}
-
-	if (fstat(fd, &st) == -1) {
-		perror("fstat");
-		return NULL;
-	}
-
-	msg = mmap(NULL, st.st_size, PROT_READ, MAP_FILE|MAP_PRIVATE, fd, 0);
-	if (msg == (uchar *)-1) {
-		perror("mmap");
-		return NULL;
-	}
-	close(fd);
-
-	sum = spamsum(msg, st.st_size, flags, block_size);
-
-	munmap(msg, st.st_size);
-
-	return sum;
-}
-
-static void show_help(void)
-{
- printf("\n\
-spamsum v1.1 written by Andrew Tridgell <tridge@samba.org>\n\
-\n\
-spamsum computes a signature string that is particular good for detecting if two emails\n\
-are very similar. This can be used to detect SPAM.\n\
-\n\
-Syntax:\n\
-   spamsum [options] <files>\n\
-or\n\
-   spamsum [options] -d sigs.txt -c SIG\n\
-or\n\
-   spamsum [options] -d sigs.txt -C file\n\
-\n\
-When called with a list of filenames spamsum will write out the\n\
-signatures of each file on a separate line. You can specify the\n\
-filename '-' for standard input.\n\
-\n\
-When called with the second form, spamsum will print the best score\n\
-for the given signature with the signatures in the given database. A\n\
-score of 100 means a perfect match, and a score of 0 means a complete\n\
-mismatch.\n\
-\n\
-When checking, spamsum returns 0 (success) when the message *is* spam,\n\
-1 for internal errors, and 2 for messages whose signature is not\n\
-found.\n\
-\n\
-The 3rd form is just like the second form, but you pass a file\n\
-containing a message instead of a pre-computed signature.\n\
-\n\
-Options:\n\
-   -W              ignore whitespace\n\
-   -H              skip past mail headers\n\
-   -B <bsize>      force a block size of bsize\n\
-   -T <threshold>  set the threshold above which spamsum will stop\n\
-                   looking (default 90)\n\
-");
-}
-
-int main(int argc, char *argv[])
-{
- char *sum;
- extern char *optarg;
- extern int optind;
- int c;
- char *dbname = NULL;
- u32 score;
- int i;
- u32 flags = 0;
- u32 block_size = 0;
- u32 threshold = 90;
-
- while ((c = getopt(argc, argv, "B:WHd:c:C:hT:")) != -1) {
-     switch (c) {
-     case 'W':
-         flags |= FLAG_IGNORE_WHITESPACE;
-         break;
-
-     case 'H':
-         flags |= FLAG_IGNORE_HEADERS;
-         break;
-
-     case 'd':
-         dbname = optarg;
-         break;
-
-     case 'B':
-         block_size = atoi(optarg);
-         break;
-
-     case 'T':
-         threshold = atoi(optarg);
-         break;
-
-     case 'c':
-         if (!dbname) {
-             show_help();
-             exit(1);
-         }
-         score = spamsum_match_db(dbname, optarg,
-                      threshold);
-         printf("%u\n", score);
-         exit(score >= threshold ? 0 : 2);
-
-     case 'C':
-         if (!dbname) {
-             show_help();
-             exit(1);
-         }
-         score = spamsum_match_db(dbname,
-                      spamsum_file(optarg, flags,
-                               block_size),
-                      threshold);
-         printf("%u\n", score);
-         exit(score >= threshold ? 0 : 2);
-
-     case 'h':
-     default:
-         show_help();
-         exit(0);
-     }
- }
-
- argc -= optind;
- argv += optind;
-
- if (argc == 0) {
-     show_help();
-     return 0;
- }
-
- /* compute the spamsum on a list of files */
- for (i=0;i<argc;i++) {
-     sum = spamsum_file(argv[i], flags, block_size);
-     printf("%s\n", sum);
-     free(sum);
- }
-
- return 0;
 }

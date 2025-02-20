@@ -30,7 +30,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [ "macOS (x86_64)", "macOS (arm64)", "iOS", "Linux (x86_64)", "Linux (arm64)" ] # Android, Windows (x86_64), Windows (arm64)
+        name: [ "macOS (x86_64)", "macOS (arm64)", "iOS", "Linux (x86_64)", "Linux (arm64)", "Windows (x86_64)" ] # Android, Windows (x86_64), Windows (arm64)
         include:
           - name: macOS (x86_64)
             platform: macos
@@ -56,10 +56,10 @@ jobs:
           #   platform: android
           #   runs-on: macos-latest
           #   archs: auto
-          # - name: Windows (x86_64)
-          #   platform: windows
-          #   runs-on: windows-latest
-          #   archs: auto
+          - name: Windows (x86_64)
+            platform: windows
+            runs-on: windows-latest
+            archs: auto
           # - name: Windows (arm64)
           #   platform: windows
           #   runs-on: windows-latest-arm??
