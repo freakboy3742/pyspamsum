@@ -24,7 +24,6 @@
 #include <errno.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
-#include <unistd.h>
 #include <ctype.h>
 
 /* the output is a string of length 64 in base64 */
