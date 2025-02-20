@@ -30,12 +30,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [ "macOS (x86_64)", "macOS (arm64)", "iOS", "Linux (x86_64)", "Linux (arm64)", "Windows (x86_64)" ] # Android, Windows (x86_64), Windows (arm64)
+        name: [ "macOS (arm64)", "iOS" ]
         include:
-          - name: macOS (x86_64)
-            platform: macos
-            runs-on: macos-13
-            archs: auto
           - name: macOS (arm64)
             platform: macos
             runs-on: macos-latest
@@ -44,26 +40,41 @@ jobs:
             platform: ios
             runs-on: macos-latest
             archs: auto
-          - name: Linux (x86_64)
-            platform: linux
-            runs-on: ubuntu-24.04
-            archs: auto
-          - name: Linux (arm64)
-            platform: linux
-            runs-on: ubuntu-24.04-arm
-            archs: auto
-          # - name: Android
-          #   platform: android
-          #   runs-on: macos-latest
-          #   archs: auto
-          - name: Windows (x86_64)
-            platform: windows
-            runs-on: windows-latest
-            archs: auto
-          # - name: Windows (arm64)
-          #   platform: windows
-          #   runs-on: windows-latest-arm??
-          #   archs: auto
+
+        # name: [ "macOS (x86_64)", "macOS (arm64)", "iOS", "Linux (x86_64)", "Linux (arm64)", "Windows (x86_64)" ] # Android, Windows (x86_64), Windows (arm64)
+        # include:
+        #   - name: macOS (x86_64)
+        #     platform: macos
+        #     runs-on: macos-13
+        #     archs: auto
+        #   - name: macOS (arm64)
+        #     platform: macos
+        #     runs-on: macos-latest
+        #     archs: auto,universal2
+        #   - name: iOS
+        #     platform: ios
+        #     runs-on: macos-latest
+        #     archs: auto
+        #   - name: Linux (x86_64)
+        #     platform: linux
+        #     runs-on: ubuntu-24.04
+        #     archs: auto
+        #   - name: Linux (arm64)
+        #     platform: linux
+        #     runs-on: ubuntu-24.04-arm
+        #     archs: auto
+        #   # - name: Android
+        #   #   platform: android
+        #   #   runs-on: macos-latest
+        #   #   archs: auto
+        #   - name: Windows (x86_64)
+        #     platform: windows
+        #     runs-on: windows-latest
+        #     archs: auto
+        #   # - name: Windows (arm64)
+        #   #   platform: windows
+        #   #   runs-on: windows-latest-arm??
+        #   #   archs: auto
 
     steps:
     - name: Checkout
@@ -95,6 +106,10 @@ jobs:
         CIBW_PLATFORM: ${{ matrix.platform }}
         CIBW_ARCHS: ${{ matrix.archs }}
         CIBW_BUILD: "cp*"
+
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
+      if: failure()
 
     - uses: actions/upload-artifact@v4.6.0
       with:
