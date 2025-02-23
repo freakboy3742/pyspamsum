@@ -43,7 +43,7 @@ test = [
 ]
 dev = [
     "pre-commit == 4.1.0",
-    "ruff == 0.9.6",
+    "ruff == 0.9.7",
     "setuptools_scm == 8.1.0",
     "tox == 4.24.1",
 ]
