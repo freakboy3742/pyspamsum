@@ -39,7 +39,7 @@ classifiers=[
 # Extras used by developers *of* briefcase are pinned to specific versions to
 # ensure environment consistency.
 test = [
-    "pytest == 8.3.5",
+    "pytest == 8.4.0",
 ]
 dev = [
     "pre-commit == 4.2.0",
