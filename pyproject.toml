@@ -43,7 +43,6 @@ test = [
 ]
 dev = [
     "pre-commit == 4.2.0",
-    "ruff == 0.12.3",
     "setuptools_scm == 8.3.1",
     "tox == 4.28.0",
 ]
@@ -65,19 +64,21 @@ filterwarnings = [
 ]
 
 [tool.ruff.lint]
-select = [
-    # pycodestyle
-    "E",
-    # Pyflakes
-    "F",
-    # pyupgrade
-    "UP",
-    # flake8-bugbear
-    "B",
-    # flake8-simplify
-    "SIM",
-    # isort
-    "I",
+# In addition to the default rules, these additional rules will be used:
+extend-select = [
+    "E",      # pycodestyle
+    "W",      # pycodestyle
+    "F",      # pyflakes
+    "UP",     # pyupgrade
+    "B",      # flake8-bugbear
+    "YTT",    # flake8-2020
+    "ASYNC",  # flake8-async
+    "C4",     # flake8-comprehensions
+    "I",      # isort
+    # The SIM rules are *very* opinionated, and don't necessarily make for better code.
+    # They may be worth occasionally turning on just to see if something could actually
+    # use improvement.
+    # "SIM",    # flake8-simplify
 ]
 
 [tool.ruff.lint.isort]
