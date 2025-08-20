@@ -46,7 +46,7 @@ test = [
 # Extras used by developers *of* briefcase are pinned to specific versions to
 # ensure environment consistency.
 cibuildwheel =[
-    "cibuildwheel == 3.1.5",
+    "cibuildwheel == 3.1.4",
 ]
 pre-commit = [
     "pre-commit == 4.3.0",
