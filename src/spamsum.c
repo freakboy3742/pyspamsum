@@ -14,7 +14,7 @@
 
   Original sources can be found at:
 
-	https://github.com/tridge/junkcode/tree/master/spamsum
+    https://github.com/tridge/junkcode/tree/master/spamsum
     https://www.samba.org/ftp/unpacked/junkcode/spamsum/
 
   Changes from the original:
@@ -27,7 +27,13 @@
   20 Feb 2025:
     * Removed the spamsum_match_db, spamsum_stdin, spamsum_file, and mainline
       entry points, plus imports required by those methods. These methods were
-      not exposed by the Python binding, and were problematic for Windows support.
+      not exposed by the Python binding, and were problematic for Windows
+      support.
+
+  18 Aug 2025:
+    * Cleaned up some compiler warnings related to passing unsigned char *
+      values into char * functions, and modified the prototype declaration for
+      edit_dist so that it is compliant with modern C standards.
 
 */
 #include <stdio.h>
@@ -36,6 +42,8 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <ctype.h>
+
+#include "edit_dist.h"
 
 /* the output is a string of length 64 in base64 */
 #define SPAMSUM_LENGTH 64
@@ -126,7 +134,7 @@ char *spamsum(const uchar *in, u32 length, u32 flags, u32 bsize)
 
 	/* if we are ignoring email headers then skip past them now */
 	if (flags & FLAG_IGNORE_HEADERS) {
-		const uchar *s = strstr(in, "\n\n");
+		const uchar *s = (const uchar *) strstr((const char *) in, "\n\n");
 		if (s) {
 			length -= (s+2 - in);
 			in = s+2;
@@ -225,7 +233,7 @@ again:
 	}
 
 	strcat(p+j, ":");
-	strcat(p+j, ret2);
+	strcat(p+j, (const char *) ret2);
 
 	/* our blocksize guess may have been way off - repeat if necessary */
 	if (bsize == 0 && block_size > MIN_BLOCKSIZE && j < SPAMSUM_LENGTH/2) {
@@ -330,7 +338,6 @@ static unsigned score_strings(const char *s1, const char *s2, u32 block_size)
 {
 	u32 score;
 	u32 len1, len2;
-	int edit_distn(const char *from, int from_len, const char *to, int to_len);
 
 	len1 = strlen(s1);
 	len2 = strlen(s2);
@@ -348,7 +355,7 @@ static unsigned score_strings(const char *s1, const char *s2, u32 block_size)
 
 	/* compute the edit distance between the two strings. The edit distance gives
 	   us a pretty good idea of how closely related the two strings are */
-	score = edit_distn(s1, len1, s2, len2);
+	score = edit_distn((char *) s1, len1, (char *) s2, len2);
 
 	/* scale the edit distance by the lengths of the two
 	   strings. This changes the score to be a measure of the

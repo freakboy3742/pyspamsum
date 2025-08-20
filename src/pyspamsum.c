@@ -22,12 +22,7 @@ struct module_state {
     PyObject *error;
 };
 
-#if PY_MAJOR_VERSION >= 3
 #define GETSTATE(m) ((struct module_state*)PyModule_GetState(m))
-#else
-#define GETSTATE(m) (&_state)
-static struct module_state _state;
-#endif
 
 PyObject *py_edit_distance(PyObject *self, PyObject *args)
 {
@@ -104,7 +99,6 @@ static PyMethodDef methods[] = {
     {NULL, NULL, 0, NULL}
 };
 
-#if PY_MAJOR_VERSION >= 3
 static int spamsum_traverse(PyObject *m, visitproc visit, void *arg) {
     Py_VISIT(GETSTATE(m)->error);
     return 0;
@@ -126,33 +120,26 @@ static struct PyModuleDef ss =
     spamsum_clear,
     NULL
 };
-#define INITERROR return NULL
 
 PyMODINIT_FUNC
 PyInit_spamsum(void)
-#else
-#define INITERROR return
-void
-initspamsum(void)
-#endif
 {
-#if PY_MAJOR_VERSION >= 3
     PyObject *module = PyModule_Create(&ss);
-#else
-    PyObject *module = Py_InitModule("spamsum", methods);
+
+    if (module == NULL) {
+        return NULL;
+    }
+#ifdef Py_GIL_DISABLED
+    PyUnstable_Module_SetGIL(module, Py_MOD_GIL_NOT_USED);
 #endif
 
-    if (module == NULL)
-        INITERROR;
     struct module_state *st = GETSTATE(module);
 
     st->error = PyErr_NewException("spamsum.Error", NULL, NULL);
     if (st->error == NULL) {
         Py_DECREF(module);
-        INITERROR;
+        return NULL;
     }
 
-#if PY_MAJOR_VERSION >= 3
     return module;
-#endif
 }

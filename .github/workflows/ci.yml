@@ -22,6 +22,8 @@ jobs:
   pre-commit:
     name: Pre-commit checks
     uses: beeware/.github/.github/workflows/pre-commit-run.yml@main
+    with:
+      pre-commit-source: "--group pre-commit"
 
   unit-tests:
     name: Unit tests
@@ -30,7 +32,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [ "macOS (x86_64)", "macOS (arm64)", "iOS", "Linux (x86_64)", "Linux (arm64)", "Windows (x86_64)" ] # Android, Windows (x86_64), Windows (arm64)
+        name: [ "macOS (x86_64)", "macOS (arm64)", "iOS", "Linux (x86_64)", "Linux (arm64)", "Windows (x86_64)", "Android" ] # Windows (arm64)
         include:
           - name: macOS (x86_64)
             platform: macos
@@ -42,8 +44,8 @@ jobs:
             archs: auto,universal2
           - name: iOS
             platform: ios
-            runs-on: macos-latest
-            archs: auto
+            runs-on: macos-14
+            archs: arm64_iphoneos arm64_iphonesimulator x86_64_iphonesimulator
           - name: Linux (x86_64)
             platform: linux
             runs-on: ubuntu-24.04
@@ -52,10 +54,10 @@ jobs:
             platform: linux
             runs-on: ubuntu-24.04-arm
             archs: auto
-          # - name: Android
-          #   platform: android
-          #   runs-on: macos-latest
-          #   archs: auto
+          - name: Android
+            platform: android
+            runs-on: ubuntu-24.04
+            archs: x86_64 arm64_v8a
           - name: Windows (x86_64)
             platform: windows
             runs-on: windows-latest
@@ -79,15 +81,20 @@ jobs:
     - name: Install cibuildwheel
       run: |
         python -m pip install -U pip
-        # Use main branch until iOS support is released.
-        # python -m pip install cibuildwheel==3.0.0
-        python -m pip install git+https://github.com/pypa/cibuildwheel.git
+        python -m pip install --group cibuildwheel
 
-    - name: iOS testing set workaround
-      if: matrix.platform == 'ios'
+    # - name: Install iOS SDK
+    #   run: |
+    #     sudo xcode-select -s "/Applications/Xcode_16.4.app"
+    #     sudo xcodebuild -downloadPlatform iOS -buildVersion 18.5
+
+    - name: Enable KVM group perms
+      if: matrix.platform == 'android'
       run: |
-        # Temp workaround - make sure there is an iOS test devices directory
-        mkdir -p /Users/runner/Library/Developer/XCTestDevices
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \
+            | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
 
     - name: Build wheels
       run: python -m cibuildwheel
@@ -95,8 +102,17 @@ jobs:
         CIBW_PLATFORM: ${{ matrix.platform }}
         CIBW_ARCHS: ${{ matrix.archs }}
         CIBW_BUILD: "cp*"
+        CIBW_SKIP: "cp39*"
 
     - uses: actions/upload-artifact@v4.6.2
       with:
         name: wheels-${{ matrix.name }}
         path: ./wheelhouse/*.whl
+
+    # # This step is only needed if you're trying to diagnose test failures that
+    # # only occur in CI, and can't be reproduced locally. When it runs, it will
+    # # open an SSH server (URL reported in the logs) so you can ssh into the CI
+    # # machine.
+    # - name: Setup tmate session
+    #   uses: mxschmitt/action-tmate@v3
+    #   if: failure()

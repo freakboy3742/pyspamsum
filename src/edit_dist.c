@@ -1,3 +1,4 @@
+#include "edit_dist.h"
 /*
   This edit distance code is taken from trn3.6. A few minor
   modifications have been made by Andrew Tridgell <tridge@samba.org>
@@ -73,9 +74,7 @@ static int _mx, _my, _mz;		/* min2, min3 temp variables */
    failure */
 
 int
-edit_distn(from, from_len, to, to_len)
-char *from, *to;
-register int from_len, to_len;
+edit_distn(char *from, register int from_len, char* to, register int to_len)
 {
 #ifndef TRN_SPEEDUP
     register int ins, del, ch;	  	/* local copies of edit costs */

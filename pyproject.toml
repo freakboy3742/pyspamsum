@@ -9,8 +9,8 @@ build-backend = "setuptools.build_meta"
 dynamic = ["version"]
 name = "pyspamsum"
 description = "A Python wrapper for Andrew Tridgell's spamsum algorithm"
-readme = "README.rst"
-requires-python = ">= 3.9"
+readme = "README.md"
+requires-python = ">= 3.10"
 authors = [
     {name="Russell Keith-Magee", email="russell@keith-magee.com"}
 ]
@@ -20,31 +20,48 @@ maintainers = [
 keywords = [
     "spamsum",
 ]
-license.text = "New BSD"
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
 classifiers=[
     "Development Status :: 5 - Production/Stable",
-    "License :: OSI Approved :: BSD License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Text Processing",
     "Topic :: Utilities",
 ]
 
 [project.optional-dependencies]
-# Extras used by developers *of* briefcase are pinned to specific versions to
-# ensure environment consistency.
+# Need to keep the `test` group until cibuildwheel supports dependency groups
+# for iOS and Android.
 test = [
     "pytest == 8.4.1",
 ]
-dev = [
+
+[dependency-groups]
+# Extras used by developers *of* briefcase are pinned to specific versions to
+# ensure environment consistency.
+cibuildwheel =[
+    "cibuildwheel == 3.1.4",
+]
+pre-commit = [
     "pre-commit == 4.3.0",
+]
+test = [
+    "pytest == 8.4.1",
+]
+ci = [
     "setuptools_scm == 8.3.1",
     "tox == 4.28.4",
+]
+dev = [
+    {include-group = "cibuildwheel"},
+    {include-group = "pre-commit"},
+    {include-group = "test"},
 ]
 
 [project.urls]
@@ -53,9 +70,11 @@ Tracker = "https://github.com/freakboy3742/pyspamsum/issues"
 Source = "https://github.com/freakboy3742/pyspamsum/"
 
 [tool.cibuildwheel]
-test-command = "pytest"
+test-command = "python -m pytest"
 test-extras = ["test"]
+# test-groups = ["test"]
 test-sources = ["tests"]
+xbuild-tools = []
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
