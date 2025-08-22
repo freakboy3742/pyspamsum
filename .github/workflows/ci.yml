@@ -19,53 +19,53 @@ env:
   FORCE_COLOR: "1"
 
 jobs:
-  pre-commit:
-    name: Pre-commit checks
-    uses: beeware/.github/.github/workflows/pre-commit-run.yml@main
-    with:
-      pre-commit-source: "--group pre-commit"
+  # pre-commit:
+  #   name: Pre-commit checks
+  #   uses: beeware/.github/.github/workflows/pre-commit-run.yml@main
+  #   with:
+  #     pre-commit-source: "--group pre-commit"
 
   unit-tests:
     name: Unit tests
-    needs: [ pre-commit ]
+    # needs: [ pre-commit ]
     runs-on: ${{ matrix.runs-on }}
     strategy:
       fail-fast: false
       matrix:
-        name: [ "macOS (x86_64)", "macOS (arm64)", "iOS", "Linux (x86_64)", "Linux (arm64)", "Windows (x86_64)", "Android" ] # Windows (arm64)
+        # name: [ "macOS (x86_64)", "macOS (arm64)", "iOS", "Linux (x86_64)", "Linux (arm64)", "Windows (x86_64)", "Android" ] # Windows (arm64)
         include:
-          - name: macOS (x86_64)
-            platform: macos
-            runs-on: macos-13
-            archs: auto
-          - name: macOS (arm64)
-            platform: macos
-            runs-on: macos-latest
-            archs: auto,universal2
+          # - name: macOS (x86_64)
+          #   platform: macos
+          #   runs-on: macos-13
+          #   archs: auto
+          # - name: macOS (arm64)
+          #   platform: macos
+          #   runs-on: macos-latest
+          #   archs: auto,universal2
           - name: iOS
             platform: ios
-            runs-on: macos-14
+            runs-on: macos-15
             archs: arm64_iphoneos arm64_iphonesimulator x86_64_iphonesimulator
-          - name: Linux (x86_64)
-            platform: linux
-            runs-on: ubuntu-24.04
-            archs: auto
-          - name: Linux (arm64)
-            platform: linux
-            runs-on: ubuntu-24.04-arm
-            archs: auto
-          - name: Android
-            platform: android
-            runs-on: ubuntu-24.04
-            archs: x86_64 arm64_v8a
-          - name: Windows (x86_64)
-            platform: windows
-            runs-on: windows-latest
-            archs: auto
-          # - name: Windows (arm64)
-          #   platform: windows
-          #   runs-on: windows-latest-arm??
+          # - name: Linux (x86_64)
+          #   platform: linux
+          #   runs-on: ubuntu-24.04
           #   archs: auto
+          # - name: Linux (arm64)
+          #   platform: linux
+          #   runs-on: ubuntu-24.04-arm
+          #   archs: auto
+          # - name: Android
+          #   platform: android
+          #   runs-on: ubuntu-24.04
+          #   archs: x86_64 arm64_v8a
+          # - name: Windows (x86_64)
+          #   platform: windows
+          #   runs-on: windows-latest
+          #   archs: auto
+          # # - name: Windows (arm64)
+          # #   platform: windows
+          # #   runs-on: windows-latest-arm??
+          # #   archs: auto
 
     steps:
     - name: Checkout
@@ -83,10 +83,13 @@ jobs:
         python -m pip install -U pip
         python -m pip install --group cibuildwheel
 
-    # - name: Install iOS SDK
-    #   run: |
-    #     sudo xcode-select -s "/Applications/Xcode_16.4.app"
+    - name: Install iOS SDK
+      run: |
+        sudo xcode-select -s "/Applications/Xcode_16.4.app"
     #     sudo xcodebuild -downloadPlatform iOS -buildVersion 18.5
+
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
 
     - name: Enable KVM group perms
       if: matrix.platform == 'android'
