@@ -95,7 +95,7 @@ jobs:
         tar zxf Python-3.13-iOS-support.b10.tar.gz
         cd ..
         python3.13 testbed clone localtest --framework ./support/Python.xcframework
-        python3.13 localtest run -- test test_platform
+        python3.13 localtest run --simulator "iPhone 16e,OS=18.5" -- test test_platform
 
     # - name: Enable KVM group perms
     #   if: matrix.platform == 'android'
