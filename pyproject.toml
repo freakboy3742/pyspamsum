@@ -35,13 +35,6 @@ classifiers=[
     "Topic :: Utilities",
 ]
 
-[project.optional-dependencies]
-# Need to keep the `test` group until cibuildwheel supports dependency groups
-# for iOS and Android.
-test = [
-    "pytest == 8.4.1",
-]
-
 [dependency-groups]
 # Extras used by developers *of* briefcase are pinned to specific versions to
 # ensure environment consistency.
@@ -70,9 +63,8 @@ Tracker = "https://github.com/freakboy3742/pyspamsum/issues"
 Source = "https://github.com/freakboy3742/pyspamsum/"
 
 [tool.cibuildwheel]
-test-command = "python -m pytest"
-test-extras = ["test"]
-# test-groups = ["test"]
+test-command = "python -m pytest -vv"
+test-groups = ["test"]
 test-sources = ["tests"]
 xbuild-tools = []
 
