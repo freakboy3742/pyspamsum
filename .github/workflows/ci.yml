@@ -44,7 +44,7 @@ jobs:
             archs: auto,universal2
           - name: iOS
             platform: ios
-            runs-on: macos-14
+            runs-on: macos-latest
             archs: arm64_iphoneos arm64_iphonesimulator x86_64_iphonesimulator
           - name: Linux (x86_64)
             platform: linux

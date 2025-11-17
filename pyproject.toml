@@ -39,13 +39,13 @@ classifiers=[
 # Extras used by developers *of* briefcase are pinned to specific versions to
 # ensure environment consistency.
 cibuildwheel =[
-    "cibuildwheel == 3.1.4",
+    "cibuildwheel == 3.3.0",
 ]
 pre-commit = [
     "pre-commit == 4.4.0",
 ]
 test = [
-    "pytest == 9.0.0",
+    "pytest == 9.0.1",
 ]
 ci = [
     "setuptools_scm == 9.2.2",
