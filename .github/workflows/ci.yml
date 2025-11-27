@@ -36,15 +36,15 @@ jobs:
         include:
           - name: macOS (x86_64)
             platform: macos
-            runs-on: macos-13
+            runs-on: macos-15-intel
             archs: auto
           - name: macOS (arm64)
             platform: macos
-            runs-on: macos-latest
+            runs-on: macos-15
             archs: auto,universal2
           - name: iOS
             platform: ios
-            runs-on: macos-latest
+            runs-on: macos-15
             archs: arm64_iphoneos arm64_iphonesimulator x86_64_iphonesimulator
           - name: Linux (x86_64)
             platform: linux
