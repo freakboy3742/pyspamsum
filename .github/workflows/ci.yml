@@ -98,11 +98,13 @@ jobs:
 
     - name: Check disk space
       run: |
-        dd if=/dev/zero of=bigfile bs=1M count=3800
+        dd if=/dev/zero of=bigfile bs=1M count=8000
         df -m
 
     - name: Build wheels
       run: |
+        mkdir $ANDROID_USER_HOME
+        mkdir $GRADLE_USER_HOME
         python -m cibuildwheel
         df -m
       env:
@@ -112,6 +114,7 @@ jobs:
         CIBW_SKIP: "cp39*"
         CIBW_BUILD_VERBOSITY: "1"
         ANDROID_USER_HOME: "/mnt/android_user_home"
+        GRADLE_USER_HOmE: "/mnt/gradle_user_home"
 
     - uses: actions/upload-artifact@v5.0.0
       with:
