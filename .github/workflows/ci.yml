@@ -57,7 +57,7 @@ jobs:
           - name: Android
             platform: android
             runs-on: ubuntu-24.04
-            archs: x86_64 arm64_v8a
+            archs: x86_64  # arm64_v8a
           # - name: Windows (x86_64)
           #   platform: windows
           #   runs-on: windows-latest
@@ -98,6 +98,7 @@ jobs:
 
     - name: Check disk space
       run: |
+        dd if=/dev/zero of=bigfile bs=1M count=10240
         df -h
 
     - name: Build wheels
@@ -105,7 +106,7 @@ jobs:
       env:
         CIBW_PLATFORM: ${{ matrix.platform }}
         CIBW_ARCHS: ${{ matrix.archs }}
-        CIBW_BUILD: "cp*"
+        CIBW_BUILD: "cp313*"
         CIBW_SKIP: "cp39*"
 
     - uses: actions/upload-artifact@v5.0.0
