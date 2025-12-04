@@ -98,7 +98,7 @@ jobs:
 
     - name: Check disk space
       run: |
-        dd if=/dev/zero of=bigfile bs=1M count=7700
+        dd if=/dev/zero of=bigfile bs=1M count=3800
         df -m
 
     - name: Build wheels
