@@ -99,15 +99,16 @@ jobs:
     - name: Check disk space
       run: |
         dd if=/dev/zero of=bigfile bs=1M count=7700
-        df -h
+        df -m
 
     - name: Build wheels
-      run: python -m cibuildwheel -v
+      run: python -m cibuildwheel
       env:
         CIBW_PLATFORM: ${{ matrix.platform }}
         CIBW_ARCHS: ${{ matrix.archs }}
         CIBW_BUILD: "cp313*"
         CIBW_SKIP: "cp39*"
+        CIBW_BUILD_VERBOSITY: "1"
 
     - uses: actions/upload-artifact@v5.0.0
       with:
