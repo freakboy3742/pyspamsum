@@ -102,13 +102,16 @@ jobs:
         df -m
 
     - name: Build wheels
-      run: python -m cibuildwheel
+      run: |
+        python -m cibuildwheel
+        df -m
       env:
         CIBW_PLATFORM: ${{ matrix.platform }}
         CIBW_ARCHS: ${{ matrix.archs }}
         CIBW_BUILD: "cp313*"
         CIBW_SKIP: "cp39*"
         CIBW_BUILD_VERBOSITY: "1"
+        ANDROID_USER_HOME: "/mnt/android_user_home"
 
     - uses: actions/upload-artifact@v5.0.0
       with:
