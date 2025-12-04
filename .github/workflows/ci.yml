@@ -103,8 +103,11 @@ jobs:
 
     - name: Build wheels
       run: |
-        mkdir $ANDROID_USER_HOME
-        mkdir $GRADLE_USER_HOME
+        PYTHON_DIR=/mnt/python
+        sudo mkdir -p $PYTHON_DIR
+        sudo chown $(whoami) $PYTHON_DIR
+        export ANDROID_USER_HOME=$PYTHON_DIR/android
+        export GRADLE_USER_HOME=$PYTHON_DIR/gradle
         python -m cibuildwheel
         df -m
       env:
@@ -113,8 +116,6 @@ jobs:
         CIBW_BUILD: "cp313*"
         CIBW_SKIP: "cp39*"
         CIBW_BUILD_VERBOSITY: "1"
-        ANDROID_USER_HOME: "/mnt/android_user_home"
-        GRADLE_USER_HOmE: "/mnt/gradle_user_home"
 
     - uses: actions/upload-artifact@v5.0.0
       with:
