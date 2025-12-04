@@ -110,7 +110,8 @@ jobs:
         export GRADLE_USER_HOME=$PYTHON_DIR/gradle
         python -m cibuildwheel
         df -m
-        du -scm /mnt/* $PYTHON_DIR/*
+        du -scm /mnt/swapfile $PYTHON_DIR/* $ANDROID_HOME/* $ANDROID_HOME/*/*
+        cat /mnt/DATALOSS_WARNING_README.txt
       env:
         CIBW_PLATFORM: ${{ matrix.platform }}
         CIBW_ARCHS: ${{ matrix.archs }}
