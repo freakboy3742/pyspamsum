@@ -98,11 +98,11 @@ jobs:
 
     - name: Check disk space
       run: |
-        dd if=/dev/zero of=bigfile bs=1M count=10240
+        dd if=/dev/zero of=bigfile bs=1M count=7700
         df -h
 
     - name: Build wheels
-      run: python -m cibuildwheel
+      run: python -m cibuildwheel -v
       env:
         CIBW_PLATFORM: ${{ matrix.platform }}
         CIBW_ARCHS: ${{ matrix.archs }}
