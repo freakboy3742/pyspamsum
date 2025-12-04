@@ -110,6 +110,7 @@ jobs:
         export GRADLE_USER_HOME=$PYTHON_DIR/gradle
         python -m cibuildwheel
         df -m
+        du -scm /mnt/* $PYTHON_DIR/*
       env:
         CIBW_PLATFORM: ${{ matrix.platform }}
         CIBW_ARCHS: ${{ matrix.archs }}
