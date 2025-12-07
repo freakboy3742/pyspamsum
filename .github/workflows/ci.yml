@@ -105,7 +105,6 @@ jobs:
         # when the update rolls through cibuildwheel.
         ##################################################################
         PYTHON_DIR=/mnt/python
-        mkdir $GRADLE_USER_HOME
         sudo mkdir -p $PYTHON_DIR
         sudo chown $(whoami) $PYTHON_DIR
         export ANDROID_USER_HOME=$PYTHON_DIR/android
