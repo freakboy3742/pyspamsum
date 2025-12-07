@@ -103,11 +103,13 @@ jobs:
         # space recovery workarounds. We should be able to revert this
         # when the update rolls through cibuildwheel.
         ##################################################################
-        PYTHON_DIR=/mnt/python
-        sudo mkdir -p $PYTHON_DIR
-        sudo chown $(whoami) $PYTHON_DIR
-        export ANDROID_USER_HOME=$PYTHON_DIR/android
-        export GRADLE_USER_HOME=$PYTHON_DIR/gradle
+        if [[ '${{ matrix.platform }}' == 'android' ]]; then
+          PYTHON_DIR=/mnt/python
+          sudo mkdir -p $PYTHON_DIR
+          sudo chown $(whoami) $PYTHON_DIR
+          export ANDROID_USER_HOME=$PYTHON_DIR/android
+          export GRADLE_USER_HOME=$PYTHON_DIR/gradle
+        fi
         ##################################################################
 
         python -m cibuildwheel
