@@ -97,7 +97,22 @@ jobs:
           sudo udevadm trigger --name-match=kvm
 
     - name: Build wheels
-      run: python -m cibuildwheel
+      run: |
+        ### WORKAROUND ###################################################
+        # See #108 - Android 34 image is large, so we need some disk
+        # space recovery workarounds. We should be able to revert this
+        # when the update rolls through cibuildwheel.
+        ##################################################################
+        if [[ '${{ matrix.platform }}' == 'android' ]]; then
+          PYTHON_DIR=/mnt/python
+          sudo mkdir -p $PYTHON_DIR
+          sudo chown $(whoami) $PYTHON_DIR
+          export ANDROID_USER_HOME=$PYTHON_DIR/android
+          export GRADLE_USER_HOME=$PYTHON_DIR/gradle
+        fi
+        ##################################################################
+
+        python -m cibuildwheel
       env:
         CIBW_PLATFORM: ${{ matrix.platform }}
         CIBW_ARCHS: ${{ matrix.archs }}
