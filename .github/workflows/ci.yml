@@ -119,7 +119,7 @@ jobs:
         CIBW_BUILD: "cp*"
         CIBW_SKIP: "cp39*"
 
-    - uses: actions/upload-artifact@v5.0.0
+    - uses: actions/upload-artifact@v6.0.0
       with:
         name: wheels-${{ matrix.name }}
         path: ./wheelhouse/*.whl
