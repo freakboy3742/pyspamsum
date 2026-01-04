@@ -42,14 +42,14 @@ cibuildwheel =[
     "cibuildwheel == 3.3.0",
 ]
 pre-commit = [
-    "pre-commit == 4.5.0",
+    "pre-commit == 4.5.1",
 ]
 test = [
     "pytest == 9.0.2",
 ]
 ci = [
     "setuptools_scm == 9.2.2",
-    "tox == 4.32.0",
+    "tox == 4.33.0",
 ]
 dev = [
     {include-group = "cibuildwheel"},
