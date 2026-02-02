@@ -1,6 +1,6 @@
 [build-system]
 requires = [
-    "setuptools==80.9.0",
+    "setuptools==80.10.2",
     "setuptools_scm==9.2.2",
 ]
 build-backend = "setuptools.build_meta"
@@ -49,7 +49,7 @@ test = [
 ]
 ci = [
     "setuptools_scm == 9.2.2",
-    "tox == 4.33.0",
+    "tox == 4.34.1",
 ]
 dev = [
     {include-group = "cibuildwheel"},
