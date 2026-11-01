@@ -1,6 +1,6 @@
 [build-system]
 requires = [
-    "setuptools==84.0.0",
+    "setuptools==84.2.1",
     "setuptools_scm==10.3.4",
 ]
 build-backend = "setuptools.build_meta"
@@ -45,11 +45,11 @@ pre-commit = [
     "pre-commit == 4.6.2",
 ]
 test = [
-    "pytest == 9.1.1",
+    "pytest == 9.2.0",
 ]
 ci = [
     "setuptools_scm == 10.3.4",
-    "tox == 4.64.6",
+    "tox == 4.65.0",
 ]
 dev = [
     {include-group = "cibuildwheel"},
