@@ -1,6 +1,6 @@
 [build-system]
 requires = [
-    "setuptools==84.0.0",
+    "setuptools==84.2.1",
     "setuptools_scm==10.3.4",
 ]
 build-backend = "setuptools.build_meta"
@@ -10,7 +10,7 @@ dynamic = ["version"]
 name = "pyspamsum"
 description = "A Python wrapper for Andrew Tridgell's spamsum algorithm"
 readme = "README.md"
-requires-python = ">= 3.10"
+requires-python = ">= 3.11"
 authors = [
     {name="Russell Keith-Magee", email="russell@keith-magee.com"}
 ]
@@ -26,11 +26,11 @@ classifiers=[
     "Development Status :: 5 - Production/Stable",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Topic :: Text Processing",
     "Topic :: Utilities",
 ]
@@ -39,17 +39,17 @@ classifiers=[
 # Extras used by developers *of* briefcase are pinned to specific versions to
 # ensure environment consistency.
 cibuildwheel =[
-    "cibuildwheel == 3.3.1",
+    "cibuildwheel == 4.3.5",
 ]
 pre-commit = [
-    "pre-commit == 4.6.2",
+    "pre-commit == 4.7.0",
 ]
 test = [
-    "pytest == 9.1.1",
+    "pytest == 9.2.0",
 ]
 ci = [
     "setuptools_scm == 10.3.4",
-    "tox == 4.64.6",
+    "tox-uv == 1.37.3",
 ]
 dev = [
     {include-group = "cibuildwheel"},

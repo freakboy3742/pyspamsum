@@ -36,15 +36,15 @@ jobs:
         include:
           - name: macOS (x86_64)
             platform: macos
-            runs-on: macos-15-intel
+            runs-on: macos-26-intel
             archs: auto
           - name: macOS (arm64)
             platform: macos
-            runs-on: macos-15
+            runs-on: macos-26
             archs: auto,universal2
           - name: iOS
             platform: ios
-            runs-on: macos-15
+            runs-on: macos-26
             archs: arm64_iphoneos arm64_iphonesimulator x86_64_iphonesimulator
           - name: Linux (x86_64)
             platform: linux
@@ -74,7 +74,7 @@ jobs:
         fetch-depth: 0
 
     - name: Set up Python
-      uses: actions/setup-python@v7.0.0
+      uses: actions/setup-python@v7.1.0
       with:
         python-version: "3.x"
 
@@ -119,7 +119,7 @@ jobs:
         CIBW_BUILD: "cp*"
         CIBW_SKIP: "cp39*"
 
-    - uses: actions/upload-artifact@v7.0.1
+    - uses: actions/upload-artifact@v7.0.2
       with:
         name: wheels-${{ matrix.name }}
         path: ./wheelhouse/*.whl
