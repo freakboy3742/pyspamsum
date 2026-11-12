@@ -46,7 +46,7 @@ test = [
 ]
 ci = [
     "setuptools_scm == 10.3.4",
-    "tox-uv == 1.37.3",
+    "tox-uv == 1.37.5",
 ]
 dev = [
     {include-group = "cibuildwheel"},
