@@ -38,9 +38,6 @@ classifiers=[
 [dependency-groups]
 # Extras used by developers *of* briefcase are pinned to specific versions to
 # ensure environment consistency.
-cibuildwheel =[
-    "cibuildwheel == 4.3.5",
-]
 pre-commit = [
     "pre-commit == 4.7.0",
 ]
@@ -94,6 +91,24 @@ extend-select = [
 
 [tool.ruff.lint.isort]
 known-first-party = ["spamsum"]
+
+[tool.rumdl]
+exclude = [".github/*.md"]
+respect-gitignore = true
+
+# MD007: List leading spaces - CoC nested lists only render on both GitHub and website with 5 spaces.
+# MD033: No inline HTML - Used for header anchors.
+[tool.rumdl.per-file-ignores]
+"CODE_OF_CONDUCT.md" = ["MD007", "MD033"]
+"AI_POLICY.md" = ["MD033"]
+
+[tool.rumdl.MD013]  # Line length
+line_length = 999999
+reflow = true
+reflow_mode = "normalize"
+
+[tool.rumdl.MD026]  # Remove punctuation at the end of headings
+punctuation = ",;:"
 
 [tool.setuptools]
 ext-modules = [
