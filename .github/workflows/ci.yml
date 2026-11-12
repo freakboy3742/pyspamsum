@@ -11,6 +11,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 defaults:
   run:
     shell: bash  # https://github.com/beeware/briefcase/pull/912
@@ -72,21 +75,12 @@ jobs:
       uses: actions/checkout@v7.0.1
       with:
         fetch-depth: 0
+        persist-credentials: false
 
     - name: Set up Python
       uses: actions/setup-python@v7.1.0
       with:
         python-version: "3.x"
-
-    - name: Install cibuildwheel
-      run: |
-        python -m pip install -U pip
-        python -m pip install --group cibuildwheel
-
-    # - name: Install iOS SDK
-    #   run: |
-    #     sudo xcode-select -s "/Applications/Xcode_16.4.app"
-    #     sudo xcodebuild -downloadPlatform iOS -buildVersion 18.5
 
     - name: Enable KVM group perms
       if: matrix.platform == 'android'
@@ -97,27 +91,11 @@ jobs:
           sudo udevadm trigger --name-match=kvm
 
     - name: Build wheels
-      run: |
-        ### WORKAROUND ###################################################
-        # See #108 - Android 34 image is large, so we need some disk
-        # space recovery workarounds. We should be able to revert this
-        # when the update rolls through cibuildwheel.
-        ##################################################################
-        if [[ '${{ matrix.platform }}' == 'android' ]]; then
-          PYTHON_DIR=/mnt/python
-          sudo mkdir -p $PYTHON_DIR
-          sudo chown $(whoami) $PYTHON_DIR
-          export ANDROID_USER_HOME=$PYTHON_DIR/android
-          export GRADLE_USER_HOME=$PYTHON_DIR/gradle
-        fi
-        ##################################################################
-
-        python -m cibuildwheel
+      uses: pypa/cibuildwheel@v4.3.5
       env:
         CIBW_PLATFORM: ${{ matrix.platform }}
         CIBW_ARCHS: ${{ matrix.archs }}
         CIBW_BUILD: "cp*"
-        CIBW_SKIP: "cp39*"
 
     - uses: actions/upload-artifact@v7.0.2
       with:
