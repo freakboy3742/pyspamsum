@@ -20,8 +20,8 @@ maintainers = [
 keywords = [
     "spamsum",
 ]
-license = "BSD-3-Clause"
-license-files = ["LICENSE"]
+license = "BSD-3-Clause AND Artistic-1.0-Perl"
+license-files = ["LICENSE", "LICENSE.spamsum"]
 classifiers=[
     "Development Status :: 5 - Production/Stable",
     "Operating System :: OS Independent",
@@ -46,7 +46,7 @@ test = [
 ]
 ci = [
     "setuptools_scm == 10.3.4",
-    "tox-uv == 1.37.3",
+    "tox-uv == 1.37.5",
 ]
 dev = [
     {include-group = "cibuildwheel"},
